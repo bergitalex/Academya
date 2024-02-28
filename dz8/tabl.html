@@ -1,0 +1,145 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Homework</title>
+    <style>
+        table {
+            width: 100%;
+            border-collapse: collapse;
+        }
+
+        td, th {
+            border: 1px solid #ddd;
+            padding: 8px;
+            text-align: left;
+        }
+
+        /* Цвет для заголовков */
+        table th,
+        table td:first-child {
+            background-color: #3498db;
+            color: black;
+        }
+
+
+        table tr:nth-child(odd) td:not(:first-child) {
+            background-color: #ecf0f1;
+        }
+
+
+        table tr:hover {
+            background-color: aquamarine;
+            color: white;
+        }
+
+        table tr:hover th,
+        table tr:hover td:first-child {
+            color: white;
+        }
+    </style>
+</head>
+<body>
+
+<table>
+    <!-- Заголовки столбцов -->
+    <tr>
+        <th> </th>
+        <th>Header 1</th>
+        <th>Header 2</th>
+        <th>Header 3</th>
+        <th>Header 4</th>
+        <th>Header 5</th>
+    </tr>
+
+    <!-- Строки таблицы -->
+    <?php for ($i = 1; $i <= 20; $i++): ?>
+    <tr>
+        <td><b>Line 1</b><?= $i ?></td>
+        <td>543<?= $i ?></td>
+        <td>3443<?= $i ?></td>
+        <td>453<?= $i ?></td>
+        <td>1258<?= $i ?></td>
+        <td>845<?= $i ?></td>
+    </tr>
+
+    <tr>
+        <td><b>Line 2</b><?= $i ?></td>
+        <td>245<?= $i ?></td>
+        <td>863<?= $i ?></td>
+        <td>8384<?= $i ?></td>
+        <td>8855<?= $i ?></td>
+        <td>5546<?= $i ?></td>
+    </tr>
+
+    <tr>
+        <td><b>Line 3</b><?= $i ?></td>
+        <td>832<?= $i ?></td>
+        <td>253<?= $i ?></td>
+        <td>22244<?= $i ?></td>
+        <td>8875<?= $i ?></td>
+        <td>256<?= $i ?></td>
+    </tr>
+    <tr>
+        <td><b>Line 4</b><?= $i ?></td>
+        <td>882<?= $i ?></td>
+        <td>344<?= $i ?></td>
+        <td>852<?= $i ?></td>
+        <td>499<?= $i ?></td>
+        <td>345<?= $i ?></td>
+    </tr>
+
+    <tr>
+        <td><b>Line 5</b><?= $i ?></td>
+        <td>8854<?= $i ?></td>
+        <td>221<?= $i ?></td>
+        <td>3444<?= $i ?></td>
+        <td>5888<?= $i ?></td>
+        <td>454<?= $i ?></td>
+    </tr>
+
+    <tr>
+        <td><b>Line 6</b><?= $i ?></td>
+        <td>101<?= $i ?></td>
+        <td>111<?= $i ?></td>
+        <td>101<?= $i ?></td>
+        <td>111<?= $i ?></td>
+        <td>101<?= $i ?></td>
+    </tr>
+
+    <tr>
+        <td><b>Line 7</b><?= $i ?></td>
+        <td>101<?= $i ?></td>
+        <td>111<?= $i ?></td>
+        <td>11<?= $i ?></td>
+        <td>1011<?= $i ?></td>
+        <td>10<?= $i ?></td>
+    </tr>
+
+    <tr>
+        <td><b>Line 8</b><?= $i ?></td>
+        <td>1<?= $i ?></td>
+        <td>11<?= $i ?></td>
+        <td>12<?= $i ?></td>
+        <td>13<?= $i ?></td>
+        <td>14<?= $i ?></td>
+    </tr>
+
+    <tr>
+        <td><b>Line 9</b><?= $i ?></td>
+        <td>15<?= $i ?></td>
+        <td>151<?= $i ?></td>
+        <td>44<?= $i ?></td>
+        <td>22<?= $i ?></td>
+        <td>7<?= $i ?></td>
+    </tr>
+
+
+    </tr>
+    <?php endfor; ?>
+</table>
+
+</body>
+</html>
