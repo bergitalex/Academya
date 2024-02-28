@@ -1,0 +1,152 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Holodilnik</title>
+    <style>
+        body {
+            background-color: #FAF9F3;
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 0;
+            text-align: center;
+			width: auto;
+        }
+
+        header {
+            padding-top: 30px;
+        }
+
+        h1 {
+            font-weight: bold;
+        }
+		
+		.wrapper {
+			display: inline;
+			justify-content: center;
+			align-items: center;
+			flex-wrap: wrap;
+			margin: 30px;
+			left: 50%;
+		}
+
+		.product-container {
+			display: flex;
+			flex-wrap: wrap;
+			justify-content: flex-start;
+			align-items: flex-wrap
+			gap: 10px;
+			margin: 30px;
+		}
+
+        .product-item {
+            width: 200px;
+            height: 250px;
+            margin: 15px;
+            border: 1px solid #000;
+            text-align: center;
+            align-items: center;
+            border-radius: 20px;
+            display: flex;
+            flex-direction: column;
+            justify-content: flex-start;
+			transition: transform 0.3s ease-in-out, box-shadow 0.3s ease-in-out;
+        }
+
+        .product-item:hover {
+			transform: scale(1.1) translateY(-5px);
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.5);
+        }
+
+        .product-image {
+           width: 80%;
+           height: 70%;
+           border-radius: 10px;
+           border: 1px solid #000;
+           margin-top: 15px;
+       }
+
+        .product-label {
+            margin-top: 15px;
+        }
+
+        .separator {
+            width: 85%;
+            margin: 30px auto;
+            border-top: 1px solid #000;
+        }
+
+        .end-message {
+            margin-bottom: 30px;
+        }
+    </style>
+</head>
+<body>
+    <header>
+        <h1>What do I have in my fridge?</h1>
+    </header>
+		<div class="wrapper">
+			<div class="product-container">
+			
+				<div class="product-item">
+					<img src="img/Pepper.png" alt="Product 1" class="product-image">
+					<div class="product-label">Pepper</div>
+				</div>
+				
+				<div class="product-item">
+					<img src="img/Apple.png" alt="Product 1" class="product-image">
+					<div class="product-label">Apple</div>
+				</div>
+				
+				<div class="product-item">
+					<img src="img/Cheese.png" alt="Product 1" class="product-image">
+					<div class="product-label">Cheese</div>
+				</div>
+				
+				<div class="product-item">
+					<img src="img/Corn.png" alt="Product 1" class="product-image">
+					<div class="product-label">Corn</div>
+				</div>
+				
+				<div class="product-item">
+					<img src="img/Mushroom.png" alt="Product 1" class="product-image">
+					<div class="product-label">Mushroom</div>
+				</div>
+				
+				<div class="product-item">
+					<img src="img/Garlic.png" alt="Product 1" class="product-image">
+					<div class="product-label">Garlic</div>
+				</div>
+				
+				<div class="product-item">
+					<img src="img/Beef.png" alt="Product 1" class="product-image">
+					<div class="product-label">Beef</div>
+				</div>
+				
+				<div class="product-item">
+					<img src="img/Fish.png" alt="Product 1" class="product-image">
+					<div class="product-label">Fish</div>
+				</div>
+				
+				<div class="product-item">
+					<img src="img/Egg.png" alt="Product 1" class="product-image">
+					<div class="product-label">Egg</div>
+				</div>
+				
+				<div class="product-item">
+					<img src="img/Coriander.png" alt="Product 1" class="product-image">
+					<div class="product-label">Coriander</div>
+				</div>
+			</div>
+			
+
+    </div>
+
+    <div class="separator"></div>
+
+    <div class="end-message">
+        ... that's all ...
+    </div>
+</body>
+</html>
