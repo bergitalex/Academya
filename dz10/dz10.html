@@ -1,0 +1,32 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Список Покупок</title>
+</head>
+<body>
+    <script>
+        let userInput = prompt("Введите список покупок, разделяя их пробелами:");
+        let shoppingList = userInput.split(' ');
+        console.log("Список покупок:", shoppingList);
+        alert("Количество элементов в списке: " + shoppingList.length);
+        let selectedElementIndex = prompt("Выберите номер элемента из списка (от 1 до " + shoppingList.length + "):");
+        selectedElementIndex = parseInt(selectedElementIndex);
+        if (selectedElementIndex >= 1 && selectedElementIndex <= shoppingList.length) {
+            let selectedElement = shoppingList[selectedElementIndex - 1];
+            alert("Выбранный элемент: " + selectedElement);
+
+            let replaceChoice = prompt("Хотите ли вы заменить выбранный элемент? Введите новое значение, если да.");
+
+            if (replaceChoice !== null && replaceChoice !== "") {
+                shoppingList[selectedElementIndex - 1] = replaceChoice;
+            }
+        } else {
+            alert("Некорректный номер элемента!");
+        }
+        let updatedShoppingList = shoppingList.join(', ');
+        alert("Обновленный список покупок: " + updatedShoppingList);
+    </script>
+</body>
+</html>
