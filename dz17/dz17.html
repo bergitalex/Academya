@@ -1,0 +1,191 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Погода</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.1/dist/css/bootstrap.min.css" rel="stylesheet"
+        integrity="sha384-4bw+/aepP/YC94hEpVNVgiZdgIC5+VKNBQNGCHeKRQN+PtmoHDEXuppvnDJzQIu9" crossorigin="anonymous">
+</head>
+
+<body>
+    <div class="container">
+        <div class="row">
+            <div class="row">
+                <div class="col-md-6">
+                    <input type="text" class="form-control" id="inputField" placeholder="Введите город">
+                </div>
+                <div class="col-md-6">
+                    <button class="btn btn-primary" onclick="handleWeatherRequest()">Получить погоду</button>
+                </div>
+            </div>
+        </div>
+
+        <div class="accordion" id="weatherAccordion">
+            <!-- Вкладка с текущей погодой -->
+            <div class="accordion-item">
+                <h2 class="accordion-header" id="currentWeatherHeading">
+                    <button class="accordion-button" type="button" onclick="toggleAccordion('currentWeatherCollapse')"
+                        aria-expanded="true" aria-controls="currentWeatherCollapse">
+                        Текущая погода
+                    </button>
+                </h2>
+                <div id="currentWeatherCollapse" class="accordion-collapse collapse show"
+                    aria-labelledby="currentWeatherHeading">
+                    <div class="accordion-body">
+                        <p>Температура: <span id="currentTemp"></span></p>
+                        <p>Влажность: <span id="currentHumidity"></span></p>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Вкладка с прогнозом погоды -->
+            <div class="accordion-item">
+                <h2 class="accordion-header" id="forecastWeatherHeading">
+                    <button class="accordion-button" type="button" onclick="toggleAccordion('forecastWeatherCollapse')"
+                        aria-expanded="false" aria-controls="forecastWeatherCollapse">
+                        Прогноз погоды
+                    </button>
+                </h2>
+                <div id="forecastWeatherCollapse" class="accordion-collapse collapse"
+                    aria-labelledby="forecastWeatherHeading">
+                    <div class="accordion-body">
+                        <p>Прогноз на следующие дни: <span id="forecastData"></span></p>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Вкладка с данными о загрязнении воздуха -->
+            <div class="accordion-item">
+                <h2 class="accordion-header" id="airPollutionHeading">
+                    <button class="accordion-button" type="button" onclick="toggleAccordion('airPollutionCollapse')"
+                        aria-expanded="false" aria-controls="airPollutionCollapse">
+                        Загрязнение воздуха
+                    </button>
+                </h2>
+                <div id="airPollutionCollapse" class="accordion-collapse collapse"
+                    aria-labelledby="airPollutionHeading">
+                    <div class="accordion-body">
+                        <p>Индекс качества воздуха: <span id="airQualityIndex"></span></p>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <script>
+            const apiKey = '23496c2a58b99648af590ee8a29c5348';
+            const units = 'metric';
+            const lang = 'ru';
+
+            function handleWeatherRequest() {
+                const city = document.querySelector('#inputField').value;
+                writeToLocalStorage(city);
+                getWeatherDataAndUpdateAccordion(city);
+            }
+
+            async function getWeatherDataAndUpdateAccordion(city) {
+                const coordObj = await getCityCoordinates(city);
+                const clearCoordObj = getCityCoordinatesClearObj(coordObj);
+                const urlsObj = getUrlsObj(clearCoordObj);
+                const weatherData = await getWeatherData(urlsObj);
+                updateAccordionWithData(weatherData);
+            }
+
+            function updateAccordionWithData(weatherData) {
+                document.querySelector('#currentTemp').textContent = `Температура: ${weatherData.currentWeather.main.temp} °C`;
+                document.querySelector('#currentHumidity').textContent = `Влажность: ${weatherData.currentWeather.main.humidity}%`;
+                document.querySelector('#forecastData').textContent = `Прогноз: ${weatherData.forecastWeather.list[0].weather[0].description}`;
+                document.querySelector('#airQualityIndex').textContent = `Индекс качества воздуха: ${weatherData.airPollution.list[0].main.aqi}`;
+            }
+
+            function toggleAccordion(collapseId) {
+                const collapseElement = document.getElementById(collapseId);
+                const isCollapsed = collapseElement.classList.contains('show');
+                if (isCollapsed) {
+                    collapseElement.classList.remove('show');
+                } else {
+                    collapseElement.classList.add('show');
+                }
+            }
+
+            // Функция запроса данных по API - возвращает объект с данными
+            async function fetchRequestAsync(url) {
+                let data = await fetch(url);
+                data = await data.json();
+                return data;
+            }
+
+            // Функция которая принимает название города и возвращает объект с координатами
+            function getCityCoordinates(city) {
+                let url = `http://api.openweathermap.org/geo/1.0/direct?q=${city}&appid=${apiKey}`;
+                return fetchRequestAsync(url);
+            }
+
+            // Функция которая ответ АПИ с координатами и возвращает объект lat lon
+            function getCityCoordinatesClearObj(rawCoordObj) {
+                let coordObj = {
+                    lat: rawCoordObj[0].lat,
+                    lon: rawCoordObj[0].lon
+                };
+                return coordObj;
+            }
+
+            // Функция которая принимает объект с координатами и возвращает объект с url запросов по разным маршрутам
+            function getUrlsObj(coordObj) {
+                let urlsObj = {
+                    currentWeather: `https://api.openweathermap.org/data/2.5/weather?lat=${coordObj.lat}&lon=${coordObj.lon}&appid=${apiKey}&units=${units}&lang=${lang}`,
+                    forecastWeather: `https://api.openweathermap.org/data/2.5/forecast?lat=${coordObj.lat}&lon=${coordObj.lon}&appid=${apiKey}&units=${units}&lang=${lang}`,
+                    airPollution: `http://api.openweathermap.org/data/2.5/air_pollution?lat=${coordObj.lat}&lon=${coordObj.lon}&appid=${apiKey}`
+                };
+                return urlsObj;
+            }
+
+            // Функция которая принимает объект с url и возвращает объект с данными
+            async function getWeatherData(urlsObj) {
+                let responses = await Promise.all([
+                    fetchRequestAsync(urlsObj.currentWeather),
+                    fetchRequestAsync(urlsObj.forecastWeather),
+                    fetchRequestAsync(urlsObj.airPollution)
+                ]);
+
+                return {
+                    currentWeather: responses[0],
+                    forecastWeather: responses[1],
+                    airPollution: responses[2]
+                };
+            }
+
+            // 1. Функция записи данных формы в localStorage. Принимает в качестве аргумент строки с данными записывает их в localStorage
+            function writeToLocalStorage(data) {
+                localStorage.setItem('city', data);
+            }
+
+            // 2. Функция чтения данных из localStorage. Возвращает строку с данными
+            function readFromLocalStorage() {
+                return localStorage.getItem('city');
+            }
+
+            // 3. Функция которая добывает данные из формы и возвращает строку
+            function getDataFromForm() {
+                value = document.querySelector('#inputField').value;
+                return value;
+            }
+
+            // 4. Функция которая записывает данные в span result
+            function printOnPage(data) {
+                document.querySelector('#result').textContent = data;
+            }
+
+            // 5. Функция которая записывает данные в форму (принимает строку с данными)
+            function printToForm(data) {
+                document.querySelector('#inputField').value = data;
+            }
+        </script>
+
+        <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.1/dist/js/bootstrap.bundle.min.js"
+            integrity="sha384-GLhlTQ8iK9t17F89GCWdQNXwiWlq8Ytf4Qxu80/efwtfAzCZepTmOkuVZg1IsF" crossorigin="anonymous"></script>
+    </div>
+</body>
+
+</html>
