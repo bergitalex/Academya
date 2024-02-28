@@ -1,0 +1,64 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <style>
+        /* CSS для стилизации формы */
+        form {
+            margin: 20px;
+            font-family: Arial, sans-serif;
+            width: 300px;
+        }
+        label {
+            display: block;
+            margin-top: 10px;
+        }
+        input[type="text"],
+        textarea,
+        select {
+            width: 100%;
+            padding: 5px;
+            margin-top: 5px;
+        }
+        input[type="radio"],
+        input[type="checkbox"] {
+            margin-right: 5px;
+        }
+    </style>
+</head>
+<body>
+<form action="обработчик.php" method="get">
+    <label for="name">Имя:</label>
+    <input type="text" id="name" name="name" placeholder="Ваше имя">
+
+    <label for="address">Адрес:</label>
+    <textarea id="address" name="address" placeholder="Введите ваш адрес"></textarea>
+
+    <label for="chopstick-quantity">Количество палочек:</label>
+    <input type="number" id="chopstick-quantity" name="chopstick-quantity" placeholder="Укажите количество">
+    <p></p>
+
+    <fieldset>
+        <legend>Виды палочек:</legend>
+        <label for="regular">Обычные</label>
+        <input type="radio" id="regular" name="chopsticks" value="Обычные">
+        <label for="training">Учебные</label>
+        <input type="radio" id="training" name="chopsticks" value="Учебные">
+    </fieldset>
+
+    <label for="sushi-type">Выберите вид суши:</label>
+    <select id="sushi-type" name="sushi-type">
+        <option value="Роллы">Роллы</option>
+        <option value="Сашими">Сашими</option>
+        <option value="Нигири">Нигири</option>
+    </select>
+
+    <label for="napkins">Нужны ли салфетки:</label>
+    <input type="checkbox" id="napkins" name="napkins" value="Да">
+
+    <label for="comments">Дополнительные комментарии:</label>
+    <textarea id="comments" name="comments" placeholder="Дополнительные комментарии"></textarea>
+
+    <input type="submit" value="Заказать">
+</form>
+</body>
+</html>
