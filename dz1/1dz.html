@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Оценка студента</title>
+</head>
+<body>
+
+  <p id="result">Результат здесь</p>
+
+  <script>
+    let studentName = prompt("Введите ваше имя:");
+    let studentGrade = parseInt(prompt("Введите вашу оценку:"));
+    if (isNaN(studentGrade)) {
+      document.getElementById('result').textContent = "Введена некорректная оценка";
+    } else {
+      let level;
+      if (studentGrade >= 1 && studentGrade <= 3) {
+        level = "Начальный уровень";
+      } else if (studentGrade >= 4 && studentGrade <= 6) {
+        level = "Средний уровень";
+      } else if (studentGrade >= 7 && studentGrade <= 9) {
+        level = "Достаточный уровень";
+      } else if (studentGrade >= 10 && studentGrade <= 12) {
+        level = "Высокий уровень";
+      } else {
+        level = "Некорректная оценка";
+      }
+      document.getElementById('result').textContent = "Имя студента: " + studentName + ". Уровень: " + level;
+    }
+  </script>
+
+</body>
+</html>
