@@ -1,0 +1,55 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Блоки</title>
+    <style>
+        #container {
+            text-align: left;
+        }
+
+        .block {
+            display: inline-block;
+            width: 100px;
+            height: 100px;
+            margin: 10px;
+            border: 2px solid black;
+            cursor: pointer;
+        }
+
+        #green { background-color: green; }
+        #yellow { background-color: yellow; }
+        #red { background-color: red; }
+
+        #bottomBlock {
+			background-color: grey;
+            width: 100px;
+            height: 100px;
+            margin: 10px;
+            border: 2px solid black;
+        }
+    </style>
+</head>
+<body>
+
+<div id="container">
+    <div id="green" class="block" onmouseover="changeColor('green')" onmouseout="resetColor()"></div>
+    <div id="yellow" class="block" onmouseover="changeColor('yellow')" onmouseout="resetColor()"></div>
+    <div id="red" class="block" onmouseover="changeColor('red')" onmouseout="resetColor()"></div>
+    <div id="bottomBlock"></div>
+</div>
+
+<script>
+
+    function changeColor(color) {
+        document.getElementById('bottomBlock').style.backgroundColor = color;
+    }
+    function resetColor() {
+        document.getElementById('bottomBlock').style.backgroundColor = 'grey';
+    }
+	
+</script>
+
+</body>
+</html>
