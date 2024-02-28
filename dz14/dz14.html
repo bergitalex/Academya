@@ -1,0 +1,157 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css">
+    <title>Generator</title>
+</head>
+<body>
+<form id="proverbForm">
+    <label for="countInput">Сколько пословиц:</label>
+    <input type="number" id="countInput" required>
+    <button type="submit">Generate</button>
+</form>
+<table class="table table-bordered table-striped table-sm">
+    <thead class="thead-dark">
+        <tr>
+            <th>Было</th>
+            <th>Стало</th>
+        </tr>
+    </thead>
+    <tbody id="proverbsTableBody"></tbody>
+</table>
+
+<script>
+const proverbs = [
+"Ум хорошо, а два лучше.",
+"Ум — горячая штука.",
+"Ум всё голова.",
+"Умом Россию не понять.",
+"Ум бережет, а глупость губит.",
+"Ум в голову приходит.",
+"Ум от ума не горит.",
+"Умом нагружен, а волосы развеваются.",
+"Умом обдумал, а ногами пошел.",
+"Ум — сокровище, не пропадет без него и копье на ветру.",
+"Ум — грех, а бес — мера.",
+"Ум есть богатство.",
+"Ум роднит народы.",
+"Ум краток, да забот — бездна.",
+"Ум не камень, взял и положил.",
+"Ум не велит, а наставляет.",
+"Ум с мерой, а глупость без меры.",
+"Ум — сокол, глаз его — телескоп.",
+"Ум — не конская морда, не разобьешь.",
+"Ум — семь пядей во лбу.",
+"Ум — не барсук, в нору не залезет.",
+"Ум в голове, а не на ветру.",
+"Ум греет душу, а глупость терпение.",
+"Ум служит человеку, а глупость — хозяином.",
+"Ум мил, да безумству хозяин.",
+"Ум в труде, да наслаждение в праздности.",
+"Ум глаза исправляет.",
+"Ум человека не обманешь.",
+"Ум на подобии огня — без сна не останешься.",
+"Ум к уму приходит.",
+"Ум с пользой тратит время.",
+"Ум желание творит.",
+"Ум общего дела дело.",
+"Ум — друг, а воля — враг.",
+"Ум — бесценное сокровище.",
+"Ум тонок, да разум невелик.",
+"Ум — враг бедности.",
+"Ум — теремок, да не на прокол.",
+"Ум силен, да не камень.",
+"Ум рассудит, что сердце не посоветует.",
+"Ум — подкова, а топор — ось.",
+"Ум легче камня, да весомей золота.",
+"Ум не вешать на гроздья.",
+"Ум — не мешок, на плечи не вешай.",
+"Ум — лучшая победа.",
+"Ум — в суде велик, а в деле своем мал.",
+"Ум голове краса.",
+"Ум — сокровище, а глупость — нищета.",
+"Ум человека — огонь, а глаза — масло.",
+"Ум — путь, а дорога — конец.",
+"Ум стоит денег.",
+"Ум от смеха бьет в ладоши.",
+"Ум — коза, к барскому плечу привыкает.",
+"Ум — лезвие, а лень — ржавчина.",
+"Ум на вершине — мир в руках.",
+];
+const variants = [
+    'кот',
+    'шеф',
+    'мозг',
+    'лес',
+    'фолк',
+    'код',
+    'рот',
+    'мёд',
+    'лук',
+    'лес',
+    'год',
+    'час',
+    'друг',
+    'жена',
+    'муж',
+    'айфон',
+    'работа',
+];
+
+const generatedProverbsHistory = [];
+
+function generateProverb(variants, proverbs) {
+    const randomProverbIndex = Math.floor(Math.random() * proverbs.length);
+    const randomVariantIndex = Math.floor(Math.random() * variants.length);
+
+    const randomProverb = proverbs[randomProverbIndex].replace("Ум", variants[randomVariantIndex]);
+    proverbs.splice(randomProverbIndex, 1);
+
+    return randomProverb;
+}
+
+function generateMultipleProverbs(count, variants, proverbs) {
+    const generatedProverbs = [];
+    for (let i = 0; i < count; i++) {
+        const proverb = generateProverb(variants, proverbs);
+        generatedProverbs.push(proverb);
+    }
+    return generatedProverbs;
+}
+
+function displayProverbsInTable(proverbsList) {
+    const tableBody = document.getElementById("proverbsTableBody");
+
+    tableBody.innerHTML = '';
+
+    proverbsList.forEach((proverb) => {
+        const newRow = tableBody.insertRow();
+        const cellWas = newRow.insertCell(0);
+        const cellBecame = newRow.insertCell(1);
+        if (generatedProverbsHistory.length > 0) {
+            cellWas.textContent = generatedProverbsHistory
+                .map((gen) => gen.shift() || "")
+                .filter(Boolean)
+                .join(", ");
+        }
+
+        cellBecame.textContent = proverb;
+    });
+    generatedProverbsHistory.push([...proverbsList]);
+}
+
+document.getElementById("proverbForm").addEventListener("submit", function (event) {
+    event.preventDefault();
+    const countInput = document.getElementById("countInput");
+    const count = parseInt(countInput.value);
+
+    if (!isNaN(count) && count > 0) {
+        const generatedProverbs = generateMultipleProverbs(count, variants, proverbs);
+        displayProverbsInTable(generatedProverbs);
+    }
+});
+</script>
+</body>
+</html>
