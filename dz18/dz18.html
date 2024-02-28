@@ -1,0 +1,156 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Погода в городах</title>
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+  <style>
+    #weatherAccordion {
+      min-width: 600px;
+    }
+  </style>
+</head>
+<body>
+
+<div class="container mt-4">
+  <div class="row">
+    <div class="col-12 text-center">
+      <h1>Погодное приложение</h1>
+    </div>
+  </div>
+
+  <div class="row mt-4">
+    <div class="col-md-6 offset-md-3">
+      <form id="searchForm">
+        <div class="input-group mb-3">
+          <input type="text" class="form-control" placeholder="Введите город" id="cityInput" required>
+          <button class="btn btn-primary" type="submit">Поиск</button>
+        </div>
+      </form>
+    </div>
+  </div>
+
+  <div class="row mt-4">
+    <div class="col-md-6 offset-md-3">
+      <div class="accordion" id="weatherAccordion">
+        <div class="accordion-item">
+          <h2 class="accordion-header" id="currentWeatherHeading">
+            <button class="accordion-button" type="button" data-bs-toggle="collapse" data-bs-target="#currentWeatherCollapse" aria-expanded="true" aria-controls="currentWeatherCollapse">
+              Текущая погода
+            </button>
+          </h2>
+          <div id="currentWeatherCollapse" class="accordion-collapse collapse show" aria-labelledby="currentWeatherHeading" data-bs-parent="#weatherAccordion">
+            <div class="accordion-body" id="currentWeatherContent"></div>
+          </div>
+        </div>
+
+        <div class="accordion-item">
+          <h2 class="accordion-header" id="airQualityHeading">
+            <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#airQualityCollapse" aria-expanded="false" aria-controls="airQualityCollapse">
+              Состояние воздуха
+            </button>
+          </h2>
+          <div id="airQualityCollapse" class="accordion-collapse collapse" aria-labelledby="airQualityHeading" data-bs-parent="#weatherAccordion">
+            <div class="accordion-body" id="airQualityContent"></div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="row mt-4">
+    <div class="col-md-6 offset-md-3 text-center">
+      <table class="table">
+        <thead>
+          <tr>
+            <th scope="col">Дата</th>
+            <th scope="col">Температура (°C)</th>
+            <th scope="col">Состояние погоды</th>
+          </tr>
+        </thead>
+        <tbody id="forecastTableBody"></tbody>
+      </table>
+    </div>
+  </div>
+</div>
+
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+<script>
+  document.getElementById('searchForm').addEventListener('submit', function(event) {
+    event.preventDefault();
+    let city = document.getElementById('cityInput').value;
+    getWeatherData(city);
+  });
+
+  function getWeatherData(city) {
+    let apiKey = '85396cd5807a34c3aaef22a15b02aadf';
+    let units = 'metric';
+    let lang = 'ru';
+
+    //для текущей погоды
+    let currentWeatherUrl = `https://api.openweathermap.org/data/2.5/weather?q=${city}&appid=${apiKey}&units=${units}&lang=${lang}`;
+
+    // для прогноза на 5 дней
+    let forecastUrl = `https://api.openweathermap.org/data/2.5/forecast?q=${city}&appid=${apiKey}&units=${units}&lang=${lang}`;
+
+    fetch(currentWeatherUrl)
+      .then(response => response.json())
+      .then(data => {
+        displayCurrentWeather(data);
+      })
+      .catch(error => {
+        console.error('Ошибка при запросе к API для текущей погоды:', error);
+        document.getElementById('currentWeatherContent').innerText = 'Не удалось получить данные о текущей погоде.';
+      });
+
+    fetch(forecastUrl)
+      .then(response => response.json())
+      .then(data => {
+        displayForecast(data);
+      })
+      .catch(error => {
+        console.error('Ошибка при запросе к API для прогноза на 5 дней:', error);
+        document.getElementById('forecastTableBody').innerHTML = '<tr><td colspan="3">Не удалось получить данные о прогнозе на 5 дней.</td></tr>';
+      });
+  }
+
+  function displayCurrentWeather(data) {
+  let temperature = data.main.temp;
+  let description = data.weather[0].description;
+  let humidity = data.main.humidity;
+  let pressure = data.main.pressure;
+  let visibility = data.visibility;
+
+  let weatherInfo = `Текущая температура: ${temperature}°C, ${description}`;
+  document.getElementById('currentWeatherContent').innerText = weatherInfo;
+
+  // Состояние воздуха в аккордеон
+  let airQualityContent = document.getElementById('airQualityContent');
+  airQualityContent.innerHTML = `
+    <p>Состояние воздуха: ${description}</p>
+    <p>Влажность: ${humidity}%</p>
+    <p>Давление: ${pressure} hPa</p>
+    <p>Видимость: ${visibility} м</p>
+  `;
+}
+	// Отображает погоду в городе в близжайшие 5 дней в 12 часов дня
+  function displayForecast(data) {
+    let forecastTableBody = document.getElementById('forecastTableBody');
+    forecastTableBody.innerHTML = '';
+
+    data.list.forEach(item => {
+      if (item.dt_txt.includes('12:00:00')) {
+        let row = `<tr>
+                      <td>${item.dt_txt.slice(0, 10)}</td>
+                      <td>${item.main.temp}°C</td>
+                      <td>${item.weather[0].description}</td>
+                    </tr>`;
+        forecastTableBody.innerHTML += row;
+      }
+    });
+  }
+</script>
+
+</body>
+</html>
